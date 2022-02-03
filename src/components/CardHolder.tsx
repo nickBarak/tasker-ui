@@ -6,7 +6,7 @@ function CardHolder({ cardData, fetchTasks }: { cardData: CardType[]; fetchTasks
   return (
     <div className="CardHolder">
         {!cardData.length && <Card fetchTasks={fetchTasks} data={{id: -1, content: "Nothing!", date: new Date(), isComplete: false }} />}
-        {cardData.map(data => <Card key={data.id} fetchTasks={fetchTasks} data={data} />)}
+        {cardData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).map(data => <Card key={data.id} fetchTasks={fetchTasks} data={data} />)}
     
         <style>{`
             .CardHolder {

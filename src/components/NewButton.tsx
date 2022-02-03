@@ -18,9 +18,9 @@ function NewButton({ fetchTasks }: { fetchTasks: Function; }) {
           setTimeout(() => setSubmitText("Submit"), 1250);
       } else {
           setSubmitText("Submitting...");
-          axios.post(api + "todo", { content: text })
+          axios.post(api + "task", { content: text })
             .then(({statusText}) => {
-                if (statusText === 'OK') {
+                if (statusText === 'Created') {
                     fetchTasks();
                     setSubmitText("Done!");
                     setTimeout(() => setSubmitText("Submit"), 1250);

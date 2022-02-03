@@ -1,14 +1,14 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { setTextRange } from 'typescript';
+import React, { useState, useEffect, useRef } from 'react';
 import { CardType, api } from '../App';
 
 function Card({ fetchTasks, data: { id, content, date, isComplete } }: { fetchTasks: Function; data: CardType }) {
+  const mounted = useRef<boolean>(false);
   const [checked, setChecked] = useState<boolean>(isComplete);
   const [text, setText] = useState<string>(content);
 
   const toggleTaskComplete = () => {
-      axios.put(api + "/task/" + id, {
+      axios.put(api + "task/" + id, {
           id, content, date,
           isComplete: !isComplete
       })
@@ -17,7 +17,7 @@ function Card({ fetchTasks, data: { id, content, date, isComplete } }: { fetchTa
   }
   
   const updateTask = () => {
-    axios.put(api + "/task/" + id, {
+    axios.put(api + "task/" + id, {
         id, date, isComplete,
         content: text
     })
@@ -26,20 +26,24 @@ function Card({ fetchTasks, data: { id, content, date, isComplete } }: { fetchTa
   }
 
   const deleteTask = () => {
-    axios.delete(api + "/task/" + id)
+    axios.delete(api + "task/" + id)
       .then(res => fetchTasks())
       .catch(console.log);
   }
 
-  useEffect(toggleTaskComplete, [checked]);
+  useEffect(() => {
+      if (mounted.current) {
+          toggleTaskComplete();
+      } else mounted.current = true;
+    }, [checked]);
 
   return (
     <div className="Card">
         <div>
             <div className="card-content">
-                <input type="text" value={text} placeholder="Press enter to delete" onChange={({currentTarget: {value}}) => setText(value)} onKeyDown={({ key }: React.KeyboardEvent<HTMLInputElement>) => key === "Enter" && updateTask()} />
+                <input type="text" value={text} placeholder="Press enter to update" onChange={({currentTarget: {value}}) => setText(value)} onKeyDown={({ key, currentTarget }: React.KeyboardEvent<HTMLInputElement>) => { if (key === "Enter") { currentTarget.blur(); updateTask(); }}} />
             </div>
-            <div className="card-date">{date.toISOString().slice(0, 10)}</div>
+            <div className="card-date">{new Date(date).toISOString().slice(0, 10)}</div>
         </div>
         <div className="checkbox">
             {checked && <button onClick={deleteTask}>Delete</button>}
@@ -53,7 +57,6 @@ function Card({ fetchTasks, data: { id, content, date, isComplete } }: { fetchTa
                 align-items: center;
                 justify-content: space-between;
                 padding: 2rem;
-                
                 border-radius: 5px;
                 border: outline;
                 box-shadow: 1px 1px .5rem gray;
@@ -64,20 +67,32 @@ function Card({ fetchTasks, data: { id, content, date, isComplete } }: { fetchTa
             }
 
             .Card:hover {
-                transform: translateY(-.16rem);
+                transform: translateY(-.13rem);
+            }
+
+            .Card > div:first-of-type {
+                width: 90%;
             }
 
             .Card .card-content {
-                font-size: 1.25rem;
+                width: 100%;
+                font-size: 1rem;
                 font-weight: bold;
                 margin-bottom: .5rem;
             }
 
-            .Card .card-content input {
+            .Card .card-content > input {
+                width: 100%;
                 border: 0;
-                font-size: 1.25rem;
+                font-size: 1.175rem;
                 font-weight: bold;
                 margin-bottom: .5rem;
+                text-overflow: ellipsis;
+
+            }
+
+            .Card .card-content > input:hover {
+                cursor: pointer;
             }
 
             .Card .card-date {
@@ -121,6 +136,12 @@ function Card({ fetchTasks, data: { id, content, date, isComplete } }: { fetchTa
 
             .Card .checkbox button:active {
                 background-color: #e0e0e0;
+            }
+
+            @media screen and (max-width: 500px) {
+                .Card .card-content input {
+                    font-size: .65rem;
+                }
             }
         `}</style>
     </div>

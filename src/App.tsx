@@ -5,7 +5,7 @@ import NewButton from './components/NewButton';
 
 import axios from 'axios';
 
-export const api = new URL("https://localhost:8080/api");
+export const api = new URL("http://localhost:8081");
 
 export interface CardType {
   id: number;
@@ -20,7 +20,7 @@ function App() {
   const fetchTasks = () => {
     axios.get(api + "task")
     .then(res => {
-      if (res.statusText == "OK") {
+      if (res.statusText === "OK") {
         setCardData(res.data);
       } else alert("Error fetching tasks");
     })
