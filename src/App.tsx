@@ -5,7 +5,7 @@ import NewButton from './components/NewButton';
 
 import axios from 'axios';
 
-export const api = new URL('http://localhost:8081');
+export const api = new URL(`http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}`);
 
 export interface CardType {
   id: number;
