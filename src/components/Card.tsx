@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
-import { CardType, api } from '../App';
+import { Task, api } from '../App';
 
-function Card({ fetchTasks, data: { id, content, date, isComplete } }: { fetchTasks: Function; data: CardType }) {
+function Card({ fetchTasks, data: { id, content, date, isComplete } }: { fetchTasks: Function; data: Task }) {
   const mounted = useRef<boolean>(false);
   const [checked, setChecked] = useState<boolean>(isComplete);
   const [text, setText] = useState<string>(content);
@@ -12,7 +12,7 @@ function Card({ fetchTasks, data: { id, content, date, isComplete } }: { fetchTa
           id, content, date,
           isComplete: !isComplete
       })
-        .then(res => fetchTasks())
+        .then(_ => fetchTasks())
         .catch(console.log);
   }
   
@@ -21,13 +21,13 @@ function Card({ fetchTasks, data: { id, content, date, isComplete } }: { fetchTa
         id, date, isComplete,
         content: text
     })
-      .then(_ => fetchTasks())
+      .then(_ => { console.log('fetching...'); fetchTasks(); })
       .catch(console.log);
   }
 
   const deleteTask = () => {
     axios.delete(api + "task/" + id)
-      .then(res => fetchTasks())
+      .then(_ => fetchTasks())
       .catch(console.log);
   }
 

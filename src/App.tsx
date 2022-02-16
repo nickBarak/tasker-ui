@@ -5,9 +5,14 @@ import NewButton from './components/NewButton';
 
 import axios from 'axios';
 
-export const api = new URL(`http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}`);
+const {
+  REACT_APP_API_HOST,
+  REACT_APP_API_PORT
+} = process.env;
 
-export interface CardType {
+export const api = new URL(`http://${REACT_APP_API_HOST || 'localhost'}:${REACT_APP_API_PORT || '80'}`);
+
+export interface Task {
   id: number;
   content: string;
   date: Date;
@@ -15,12 +20,12 @@ export interface CardType {
 }
 
 function App() {
-  const [cardData, setCardData] = useState<CardType[]>([]);
+  const [cardData, setCardData] = useState<Task[]>([]);
 
   const fetchTasks = () => {
     axios.get(api + "task")
     .then(res => {
-      if (res.statusText === "OK") {
+      if (res.status === 200) {
         setCardData(res.data);
       } else alert("Error fetching tasks");
     })

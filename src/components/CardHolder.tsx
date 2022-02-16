@@ -1,8 +1,8 @@
 import React from 'react';
 import Card from './Card';
-import { CardType } from '../App';
+import { Task } from '../App';
 
-function CardHolder({ cardData, fetchTasks }: { cardData: CardType[]; fetchTasks: Function; }) {
+function CardHolder({ cardData, fetchTasks }: { cardData: Task[]; fetchTasks: Function; }) {
   return (
     <div className="CardHolder">
         {!cardData.length && <Card fetchTasks={fetchTasks} data={{id: -1, content: "Nothing!", date: new Date(), isComplete: false }} />}
