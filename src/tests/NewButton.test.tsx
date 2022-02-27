@@ -4,7 +4,7 @@ import NewButton from '../components/NewButton';
 
 describe('DOM', () => {
   it('renders correctly', () => {
-    render(<NewButton fetchTasks={()=>{}}/>);
+    render(<NewButton />);
     const buttons: HTMLButtonElement[] = screen.getAllByRole('button');
     const input: HTMLInputElement = screen.getByRole('textbox');
     const filteredButtons = buttons.filter(({textContent}) => ['Submit', 'New'].includes(textContent + ''));
@@ -16,7 +16,7 @@ describe('DOM', () => {
 
 describe('Button Text', () => {
   it('changes "New" button text on click events', () => {
-    render(<NewButton fetchTasks={()=>{}}/>);
+    render(<NewButton />);
     const buttons: HTMLButtonElement[] = screen.getAllByRole('button');
     const newButton: HTMLButtonElement = buttons.find(({textContent}) => textContent == 'New')!;
     expect(newButton).toBeTruthy();
@@ -29,7 +29,7 @@ describe('Button Text', () => {
   });
 
   it('changes "Submit" button text on submit events', async () => {
-    const { container } = render(<NewButton fetchTasks={()=>{}}/>);
+    const { container } = render(<NewButton />);
     const form: HTMLFormElement = container.querySelector('form')!;
     expect(form).toBeTruthy();
     const input: HTMLInputElement = within(form).getByRole('textbox');
@@ -53,7 +53,7 @@ describe('Button Text', () => {
 
 describe('Input Box', () => {
   it('updates input value on change event', () => {
-    render(<NewButton fetchTasks={()=>{}}/>);
+    render(<NewButton />);
     const input: HTMLInputElement = screen.getByRole('textbox');
 
     act(() => { fireEvent.change(input, {target: {value: 'test'}}); });
@@ -63,7 +63,7 @@ describe('Input Box', () => {
 
 describe('Form Submission', () => {
   it('does not trigger request with empty content', () => {
-    const { container } = render(<NewButton fetchTasks={()=>{}}/>);
+    const { container } = render(<NewButton />);
     const form: HTMLFormElement = container.querySelector('form')!;
     expect(form).toBeTruthy();
     const submitButton: HTMLButtonElement = within(form).getByRole('button');
@@ -73,7 +73,7 @@ describe('Form Submission', () => {
   });
 
   it('triggers request with non-empty content', async () => {
-    const { container } = render(<NewButton fetchTasks={()=>{}}/>);
+    const { container } = render(<NewButton />);
     const form: HTMLFormElement = container.querySelector('form')!;
     expect(form).toBeTruthy();
     const input: HTMLInputElement = within(form).getByRole('textbox');

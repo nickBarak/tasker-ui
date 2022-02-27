@@ -1,26 +1,28 @@
 import React, { ReactComponentElement, ReactElement } from 'react';
 import { render, screen, within } from '@testing-library/react';
 import CardHolder from '../components/CardHolder';
-import { Task } from '../App';
+import { Task } from '../types';
 
 const sampleData: Task[] = [
   {
     id: 1,
     content: 'task 1',
     date: new Date(),
-    isComplete: false
+    isComplete: false,
+    author: 'someone'
   },
   {
     id: 2,
     content: 'task 2',
     date: new Date(),
-    isComplete: true
+    isComplete: true,
+    author: 'someone'
   }
 ]
 
 describe('DOM', () => {
   it('renders default card with empty data', () => {
-    const { container } = render(<CardHolder fetchTasks={()=>{}} cardData={[]} />);
+    const { container } = render(<CardHolder />);
     const cards = container.querySelectorAll('.Card');
     expect(cards.length).toBe(1);
     const cardContent: HTMLInputElement = within(cards.item(0) as HTMLElement).getByRole('textbox');
@@ -29,7 +31,7 @@ describe('DOM', () => {
   });
 
   it('renders a card for each item in data', () => {
-    const { container } = render(<CardHolder fetchTasks={()=>{}} cardData={sampleData} />);
+    const { container } = render(<CardHolder />);
     const cards = container.querySelectorAll('.Card');
     expect(cards.length).toBe(sampleData.length);
     const tasks: {content:string; isComplete:boolean;}[] = [];

@@ -1,87 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import CardHolder from './components/CardHolder';
-import NewButton from './components/NewButton';
+import LoginManager from './components/LoginManager';
+import Home from './components/Home';
+import Admin from './components/Admin';
+import Redirect from './components/Redirect';
+import NotFound from './components/NotFound';
 
-import axios from 'axios';
-
-const {
-  REACT_APP_API_HOST,
-  REACT_APP_API_PORT
-} = process.env;
-
-export const api = new URL(`http://${REACT_APP_API_HOST || 'localhost'}:${REACT_APP_API_PORT || '80'}`);
-
-export interface Task {
-  id: number;
-  content: string;
-  date: Date;
-  isComplete: boolean;
-}
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { Store, User } from './types';
+import { routes } from './resources';
+import { getTasks } from './ajax';
+import { updateTasks, updateUser } from './store/actions';
 
 function App() {
-  const [cardData, setCardData] = useState<Task[]>([]);
+  const user = useSelector<Store, User | null>(({ user }) => user);
+  const dispatch = useDispatch();
+  const [mounted, setMounted] = useState<boolean>(false);
 
-  const fetchTasks = () => {
-    axios.get(api + "task")
-    .then(res => {
-      if (res.status === 200) {
-        setCardData(res.data);
-      } else alert("Error fetching tasks");
-    })
-    .catch(console.log);
-  }
+  useEffect(() => {
+    if (!mounted) setMounted(true);
 
-  useEffect(fetchTasks, []);
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      dispatch(updateUser(JSON.parse(userString)));
+    }
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <div className="title">Tasker</div>
-        <div className="user"><span>Nick Barak</span></div>
-      </header>
-      <NewButton fetchTasks={fetchTasks} />
-      <CardHolder fetchTasks={fetchTasks} cardData={cardData} />
+    if (user) {
+      getTasks()
+        .then(tasks => dispatch(updateTasks(tasks)));
+    }
+  }, [mounted]);
 
-      <style>{`
-        .App {
-          padding: 2vw 5vw;
+  return !mounted ? <h6>Loading...</h6> : (
+    <BrowserRouter>
+      <Routes>
+        {user
+          ? [
+              <Route key={routes.LOG_IN} path={routes.LOG_IN} element={<Redirect to={routes.HOME} />} />,
+              <Route key={routes.HOME} path={routes.HOME} element={<Home />} />,
+            ]
+          : [
+              <Route key={routes.LOG_IN} path={routes.LOG_IN} element={<LoginManager />} />,
+              <Route key={routes.HOME} path={routes.HOME} element={<Redirect to={routes.LOG_IN} />} />,
+            ]
         }
 
-        .App .App-header {
-          display: flex;
-          justify-content: space-between;
-          color: #555;
-        }
+        {user?.role === "ADMIN" && [
+          <Route key={routes.ADMIN} path={routes.ADMIN} element={<Admin />} />,
+        ]}
 
-        .App .App-header .title {
-          font-size: 2rem;
-        }
-
-        .App .App-header .user {
-          position: relative;
-        }
-
-        .App .App-header .user::before {
-          content: "";
-          position: absolute;
-          height: 1px;
-          width: 100px;
-          bottom: 12px;
-          right: -7px;
-          background-color: #bbb;
-        }
-
-        .App .App-header .user::after {
-          content: "";
-          position: absolute;
-          right: -7px;
-          height: 90vh;
-          width: 1px;
-          background-color: #bbb;
-        }
-      `}</style>
-    </div>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { api } from '../App';
+import { useDispatch } from 'react-redux';
+import { getTasks, createTask } from '../ajax';
+import { updateTasks } from '../store/actions';
 
-function NewButton({ fetchTasks }: { fetchTasks: Function; }) {
+function NewButton() {
   const [clicked, setClicked] = useState<boolean>(false);
   const [text, setText] = useState<string>("");
   const [submitText, setSubmitText] = useState<string>("Submit");
+  const dispatch = useDispatch();
 
   useEffect(() => {
       !clicked && setTimeout(() => setText(""), 750);
@@ -18,20 +20,14 @@ function NewButton({ fetchTasks }: { fetchTasks: Function; }) {
           setTimeout(() => setSubmitText("Submit"), 1250);
       } else {
           setSubmitText("Submitting...");
-          axios.post(api + "task", { id: -1, content: text, date: new Date(), isComplete: false })
-            .then(({status}) => {
-                if (status === 201) {
-                    fetchTasks();
-                    setSubmitText("Done!");
-                    setTimeout(() => setSubmitText("Submit"), 1250);
-                    setText("");
-                } else {
-                    setSubmitText("Retry!");
-                    setTimeout(() => setSubmitText("Submit"), 1500);
-                };
+          createTask(text)
+            .then(_ => {
+                getTasks().then(tasks => dispatch(updateTasks(tasks)));
+                setSubmitText("Done!");
+                setTimeout(() => setSubmitText("Submit"), 1250);
+                setText("");
             })
-            .catch((e) => {
-                console.log(e);
+            .catch(_ => {
                 setSubmitText("Retry!");
                 setTimeout(() => setSubmitText("Submit"), 1500);
             });

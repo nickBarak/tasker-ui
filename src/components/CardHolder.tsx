@@ -1,12 +1,15 @@
 import React from 'react';
 import Card from './Card';
-import { Task } from '../App';
+import { Store } from '../types';
+import { useSelector } from 'react-redux';
 
-function CardHolder({ cardData, fetchTasks }: { cardData: Task[]; fetchTasks: Function; }) {
+function CardHolder() {
+  const tasks = useSelector(({ tasks }: Store) => tasks);
+
   return (
     <div className="CardHolder">
-        {!cardData.length && <Card fetchTasks={fetchTasks} data={{id: -1, content: "Nothing!", date: new Date(), isComplete: false }} />}
-        {cardData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).map(data => <Card key={data.id} fetchTasks={fetchTasks} data={data} />)}
+        {!tasks.length && <Card data={{id: -1, content: "Nothing!", date: new Date(), isComplete: false, author: 'Unknown' }} />}
+        {tasks.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).map(data => <Card key={data.id} data={data} />)}
     
         <style>{`
             .CardHolder {

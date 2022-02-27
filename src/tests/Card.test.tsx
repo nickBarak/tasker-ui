@@ -1,18 +1,19 @@
 import React from 'react';
 import { render, screen, act, fireEvent } from '@testing-library/react';
 import Card from '../components/Card';
-import { Task } from '../App';
+import { Task } from '../types';
 
 const sampleData: Task = {
   id: 1,
   content: 'test',
   date: new Date(),
-  isComplete: false
+  isComplete: false,
+  author: 'someone'
 }
 
 describe('DOM', () => {
   it('renders correctly', () => {
-    const { container } = render(<Card fetchTasks={()=>{}} data={sampleData} />);
+    const { container } = render(<Card data={sampleData} />);
     const input: HTMLInputElement = screen.getByRole('textbox');
     const checkbox: HTMLInputElement = screen.getByRole('checkbox');
     const cardDate = container.querySelector('.card-date');
@@ -23,13 +24,13 @@ describe('DOM', () => {
   });
 
   it('does not render "Delete" button with incomplete task', () => {
-    render(<Card fetchTasks={()=>{}} data={sampleData} />);
+    render(<Card data={sampleData} />);
     const deleteButton: HTMLElement | null = screen.queryByRole('button');
     expect(deleteButton).not.toBeTruthy();
   });
 
   it('renders "Delete" button with complete task', () => {
-    render(<Card fetchTasks={()=>{}} data={{...sampleData, isComplete: true}} />);
+    render(<Card data={{...sampleData, isComplete: true}} />);
     const deleteButton: HTMLElement | null = screen.queryByRole('button');
     expect(deleteButton).toBeTruthy();
   });
@@ -37,7 +38,7 @@ describe('DOM', () => {
 
 describe('Input Box', () => {
   it('updates input value on change event', () => {
-    render(<Card fetchTasks={()=>{}} data={sampleData} />);
+    render(<Card data={sampleData} />);
     const input: HTMLInputElement = screen.getByRole('textbox');
 
     act(() => { fireEvent.change(input, {target: {value: 'changed'}}); });
@@ -47,7 +48,7 @@ describe('Input Box', () => {
 
 describe('Checkbox', () => {
   it('updates checkbox value on click event', () => {
-    render(<Card fetchTasks={()=>{}} data={sampleData} />);
+    render(<Card data={sampleData} />);
     const checkbox: HTMLInputElement = screen.getByRole('checkbox');
 
     act(() => { fireEvent.click(checkbox); });

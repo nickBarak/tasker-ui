@@ -1,52 +1,61 @@
-import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
-import { Task, api } from '../App';
+import { Task } from '../types';
+import { updateTask, deleteTask, getTasks } from '../ajax';
+import { useDispatch } from 'react-redux';
+import { updateTasks } from '../store/actions';
 
-function Card({ fetchTasks, data: { id, content, date, isComplete } }: { fetchTasks: Function; data: Task }) {
-  const mounted = useRef<boolean>(false);
-  const [checked, setChecked] = useState<boolean>(isComplete);
-  const [text, setText] = useState<string>(content);
+function Card({ data, data: { id, content, date, isComplete } }: { data: Task; }) {
+    const mounted = useRef<boolean>(false);
+    const [deleted, setDeleted] = useState<boolean>(false);
+    const [checked, setChecked] = useState<boolean>(isComplete);
+    const [text, setText] = useState<string>(content);
+    const dispatch = useDispatch();
 
-  const toggleTaskComplete = () => {
-      axios.put(api + "task/" + id, {
-          id, content, date,
-          isComplete: !isComplete
-      })
-        .then(_ => fetchTasks())
-        .catch(console.log);
-  }
-  
-  const updateTask = () => {
-    axios.put(api + "task/" + id, {
-        id, date, isComplete,
-        content: text
-    })
-      .then(_ => { console.log('fetching...'); fetchTasks(); })
-      .catch(console.log);
-  }
+    const updateCardContent = ({ key, currentTarget }: React.KeyboardEvent<HTMLInputElement>) => {
+        if (id < 0) return;
+        if (key === "Enter") {
+            currentTarget.blur();
+            updateTask({ ...data, content: text })
+                .then(_ => getTasks())
+                .then(tasks => dispatch( updateTasks(tasks) ))
+                .catch(console.log);
+        }
+    }
 
-  const deleteTask = () => {
-    axios.delete(api + "task/" + id)
-      .then(_ => fetchTasks())
-      .catch(console.log);
-  }
+    const deleteCard = () => {
+        if (id < 0) return;
+        deleteTask(id)
+            .then(getTasks)
+            .then(tasks => dispatch( updateTasks(tasks) ))
+            .then(() => setDeleted(true))
+            .catch(console.log);
+    }
 
-  useEffect(() => {
-      if (mounted.current) {
-          toggleTaskComplete();
-      } else mounted.current = true;
+    useEffect(() => {
+        if (id < 0) return;
+        if (mounted.current) {
+            updateTask({ ...data, isComplete: !isComplete })
+                .then(_ => getTasks())
+                .then(tasks => dispatch( updateTasks(tasks) ))
+                .catch(console.log);
+        } else mounted.current = true;
     }, [checked]);
 
-  return (
+  return deleted ? <></> : (
     <div className="Card">
         <div>
             <div className="card-content">
-                <input type="text" value={text} placeholder="Press enter to update" onChange={({currentTarget: {value}}) => setText(value)} onKeyDown={({ key, currentTarget }: React.KeyboardEvent<HTMLInputElement>) => { if (key === "Enter") { currentTarget.blur(); updateTask(); }}} />
+                <input
+                    type="text"
+                    value={text}
+                    placeholder="Press enter to update"
+                    onChange={({currentTarget: {value}}) => setText(value)}
+                    onKeyDown={updateCardContent} />
             </div>
             <div className="card-date">{new Date(date).toISOString().slice(0, 10)}</div>
         </div>
         <div className="checkbox">
-            {checked && <button onClick={deleteTask}>Delete</button>}
+            {checked && <button onClick={deleteCard}>Delete</button>}
             <input type="checkbox" checked={checked} onChange={() => setChecked(!checked)} />
         </div>
 
