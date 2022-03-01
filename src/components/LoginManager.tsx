@@ -5,6 +5,7 @@ import Login from './Login'
 function LoginManager() {
   return (
     <div className="LoginManager">
+        <div className="title">Tasker</div>
         <Login type={LOG_IN} />
         <Login type={SIGN_UP} />
 
@@ -21,6 +22,11 @@ function LoginManager() {
                 outline: 1px solid lightgray;
                 height: 70vh;
                 margin: 3rem 5rem;
+            }
+
+            .LoginManager .title {
+              font-size: 2rem;
+              color: #555;
             }
         `}</style>
 
