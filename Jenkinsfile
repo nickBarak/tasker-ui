@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Git Repository') {
             steps {
-                echo '=== CLONE REPOSITORY ==='
+                echo '=== CLONE GIT REPOSITORY ==='
                 sh 'sudo rm -rf tasker-ui'
                 sh 'sudo git clone https://github.com/nickBarak/tasker-ui.git tasker-ui'
             }
