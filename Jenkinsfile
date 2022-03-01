@@ -27,8 +27,12 @@ pipeline {
         
         stage('Restart Container with Latest Image') {
             steps {
-                echo '=== RESTART CONTAINER WITH LATEST IMAGES ==='
-                sh 'sudo docker restart ui'
+                echo '=== RESTART CONTAINER WITH LATEST IMAGE ==='
+                sh 'pwd'
+                echo '$WORKSPACE'
+                sh 'cat $WORKSPACE/release.txt'
+                sh 'sudo docker-compose -f "../../../../home/opc/docker-compose.yaml" down'
+                sh 'sudo docker-compose -f "../../../../home/opc/docker-compose.yaml" up -d'
             }
         }
     }

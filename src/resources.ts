@@ -7,7 +7,7 @@ const {
     REACT_APP_API_PORT
 } = process.env;
   
-export const api = new URL(`http://${REACT_APP_API_HOST || 'localhost'}:${REACT_APP_API_PORT || '8080'}`);
+export const api = new URL(`http://${REACT_APP_API_HOST || 'localhost'}:${REACT_APP_API_PORT || '8081'}`);
 
 export const ajaxCaller = () => {
     const jwt = localStorage.getItem('jwt');

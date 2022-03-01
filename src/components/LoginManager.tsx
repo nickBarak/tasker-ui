@@ -19,6 +19,7 @@ function LoginManager() {
                 border: outline;
                 box-shadow: 1px 1px .6rem gray;
                 padding: 3rem;
+                padding-top: 2.25rem;
                 outline: 1px solid lightgray;
                 height: 70vh;
                 margin: 3rem 5rem;
