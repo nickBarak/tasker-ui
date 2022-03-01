@@ -13,7 +13,7 @@ pipeline {
         stage('Free Memory') {
             steps {
                 echo '=== FREE MEMORY ==='
-                sh 'sudo docker-compose down'
+                sh 'sudo docker-compose -f "~/docker-compose.yaml" down'
             }
         }
 
