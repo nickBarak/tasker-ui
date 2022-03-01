@@ -10,6 +10,13 @@ pipeline {
             }
         }
 
+        stage('Free Memory') {
+            steps {
+                echo '=== FREE MEMORY ==='
+                sh 'sudo docker-compose down'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 echo '=== BUILD DOCKER IMAGE ==='
@@ -25,10 +32,10 @@ pipeline {
             }
         }
         
-        stage('Restart Container with Latest Image') {
+        stage('Restart Containers with Latest Images') {
             steps {
-                echo '=== RESTART CONTAINER WITH LATEST IMAGE ==='
-                sh 'sudo docker restart ui'
+                echo '=== RESTART CONTAINERS WITH LATEST IMAGES ==='
+                sh 'sudo docker-compose up'
             }
         }
     }
