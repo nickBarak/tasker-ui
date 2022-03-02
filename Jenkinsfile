@@ -20,7 +20,6 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo '=== BUILD DOCKER IMAGE ==='
-                sh 'sudo docker rmi -f nickbarak/tasker-ui'
                 sh 'sudo docker build -t nickbarak/tasker-ui tasker-ui'
             }
         }
