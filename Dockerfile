@@ -1,8 +1,6 @@
 FROM node:latest
-WORKDIR /ui
-COPY package*.json ./
-RUN npm install
 COPY . .
-# RUN npm run build
+RUN npm install
+RUN npm run build
 EXPOSE 80
 CMD ["npm", "start"]
