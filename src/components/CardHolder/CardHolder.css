@@ -1,0 +1,8 @@
+.CardHolder {
+  border-radius: 5px;
+  border: outline;
+  box-shadow: 1px 1px 0.6rem gray;
+  padding: 2rem;
+  padding-bottom: 1rem;
+  outline: 1px solid lightgray;
+}

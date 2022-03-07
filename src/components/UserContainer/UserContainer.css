@@ -1,0 +1,44 @@
+.UserContainer .change-password {
+  padding-bottom: 1rem;
+}
+
+.UserContainer .change-password input {
+  margin-left: 0.5rem;
+  border-radius: 4px;
+  height: 1.3rem;
+  padding-left: 0.25rem;
+}
+
+.UserContainer .change-password button {
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+  display: inline;
+  background-color: #eee;
+  padding: 0.15rem 0.3rem;
+  border-radius: 5px;
+  text-decoration: none;
+  border: 1px solid #777;
+  color: black;
+}
+
+.UserContainer .change-password button:hover {
+  cursor: pointer;
+  background-color: #ddd;
+}
+
+.UserContainer .change-password button:active {
+  background-color: #ccc;
+}
+
+.UserContainer .change-password-error {
+  color: red;
+}
+
+.UserContainer .change-password-success {
+  color: green;
+}
+
+.UserContainer .change-password-message {
+  margin-left: 0.4rem;
+  margin-top: 0.25rem;
+}

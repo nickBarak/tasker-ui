@@ -2,14 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Git Repository') {
-            steps {
-                echo '=== CLONE GIT REPOSITORY ==='
-                sh 'sudo rm -rf tasker-ui'
-                sh 'sudo git clone https://github.com/nickBarak/tasker-ui.git tasker-ui'
-            }
-        }
-
         stage('Free Memory') {
             steps {
                 echo '=== FREE MEMORY ==='
@@ -20,6 +12,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo '=== BUILD DOCKER IMAGE ==='
+                sh 'sudo cp ../../../../../home/opc/.env .env'
                 sh 'sudo docker build -t nickbarak/tasker-ui tasker-ui'
             }
         }

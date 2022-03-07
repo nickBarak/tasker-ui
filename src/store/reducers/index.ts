@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import user from './user';
-import tasks from './tasks';
+import user from "./userReducer";
+import tasks from "./tasksReducer";
 
 export default combineReducers({ user, tasks });

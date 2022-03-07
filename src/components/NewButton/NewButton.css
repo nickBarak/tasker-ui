@@ -1,0 +1,47 @@
+.NewButton {
+  display: flex;
+  justify-content: right;
+  margin: 1.5rem 0;
+}
+
+.NewButton form {
+  transition: transform 750ms ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  margin-right: 0.9rem;
+  width: 100%;
+}
+
+.NewButton input {
+  width: 40vw;
+  height: 1.75rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 5px;
+  margin-right: 1rem;
+  font-size: 0.95rem;
+  width: 67%;
+}
+
+.NewButton button {
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: transparent;
+  font-size: 0.95rem;
+  color: #555;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  min-width: 5.75rem;
+  transform: translateY(-0.2rem);
+}
+
+.NewButton button:hover {
+  background-color: #ececec;
+  cursor: pointer;
+}
+
+.NewButton button:active {
+  background-color: #e0e0e0;
+}

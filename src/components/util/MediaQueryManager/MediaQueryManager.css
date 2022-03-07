@@ -1,0 +1,58 @@
+/* max-width desc */
+
+@media screen and (max-width: 675px) {
+  * {
+    font-size: 0.85rem;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .NewButton {
+    flex-direction: column;
+  }
+
+  .NewButton > button {
+    margin-top: 1rem;
+  }
+
+  .UserContainer .change-password input {
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .Home .home-content {
+    margin: 0 2rem;
+  }
+
+  .User {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 1.15rem;
+    padding-bottom: 0.85rem;
+  }
+
+  .User span {
+    margin-bottom: 0.45rem;
+  }
+}
+
+/* max-height desc */
+
+@media screen and (max-height: 600px) {
+  .Login {
+    margin: 0.5rem 0;
+  }
+}
+
+@media screen and (max-height: 550px) {
+  * {
+    font-size: 0.75rem;
+  }
+}
+
+@media screen and (max-height: 500px) {
+  * {
+    font-size: 0.65rem;
+  }
+}
