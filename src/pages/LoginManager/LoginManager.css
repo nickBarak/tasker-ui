@@ -6,12 +6,11 @@
   border-radius: 5px;
   border: outline;
   box-shadow: 1px 1px 0.6rem gray;
-  /* padding: 3rem;
-  padding-top: 2.25rem; */
   outline: 1px solid lightgray;
   margin: 7vh 10vw;
   height: 86vh;
   width: 80vw;
+  background-color: red;
 }
 
 .LoginManager .title {
