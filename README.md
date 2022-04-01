@@ -43,6 +43,7 @@ You will need to ensure the following variables are set in your system environme
 - DB_USER (postgres)
 - DB_PASSWORD (secret)
 - JWT_SECRET (secret_key)
+- ENV (prod)
 
 You will need the following installed to run the application:
 
@@ -54,7 +55,7 @@ That's it! All other requirements ship with the Docker images.
 
 Copy the files 'docker-compose.yaml' and 'initdb.sql' located in the root directory of the repository at "https://github.com/nickBarak/tasker-api_spring" to your desired environment.
 
-Now just run the command `docker-compose up` and you're good to go!
+Now just run the command `docker-compose up` and you're good to go! Just vist "localhost" in a web browser.
 
 Note: If facing issues related to environment variables, set the values in a '.env' file in the execution directory.
 
@@ -145,5 +146,5 @@ Deletes a task given the task ID as a path variable in the request URL.
 
 Error page listing status code, request URI, exception type and message
 
-API Repository: https://github.com/nickBarak/tasker-api_spring
+API Repository: https://github.com/nickBarak/tasker-api_spring  
 UI Repository: https://github.com/nickBarak/tasker-ui
